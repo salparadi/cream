@@ -1,0 +1,31 @@
+[project]
+name = "cream"
+version = "1.0"
+authors = [
+	{ name="salparadi", email="cream@salparadi.com" },
+]
+description = "A Python EVM-chain block/transaction watcher."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+	"fastapi",
+	"redis",
+	"ujson",
+	"uvicorn"
+]
+license = {text = "MIT"}
+classifiers = [
+	"Programming Language :: Python :: 3",
+	"License :: OSI Approved :: MIT License",
+	"Development Status :: 3 - Alpha",
+	"Intended Audience :: Developers",
+	"Natural Language :: English",
+	"Operating System :: POSIX",
+]
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project.scripts]
+cream = "cream.main:run"
