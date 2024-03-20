@@ -246,7 +246,7 @@ class TransactionService:
                 continue
             
             try: 
-                result = await redis_client.publish('pending_transactions_channel', ujson.dumps(transaction))
+                result = await redis_client.publish('cream_pending_transactions', ujson.dumps(transaction))
             except Exception as exc:
                 log.error(f"(process_pending_transactions) (redis_client.publish) ({type(exc)}): {exc}")
             
@@ -260,7 +260,7 @@ class TransactionService:
             transaction = await self.finalized_transactions.get()
             
             try: 
-                result = await redis_client.publish('finalized_transactions_channel', ujson.dumps(transaction))
+                result = await redis_client.publish('cream_finalized_transactions', ujson.dumps(transaction))
             except Exception as exc:
                 log.error(f"(process_finalized_transactions) (redis_client.publish) ({type(exc)}): {exc}")
             

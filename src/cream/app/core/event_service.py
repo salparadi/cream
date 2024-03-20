@@ -58,7 +58,7 @@ class EventService:
                             
                             # Add the event to redis
                             try: 
-                                result = await redis_client.publish('events_channel', ujson.dumps(event))
+                                result = await redis_client.publish('cream_events', ujson.dumps(event))
                             except Exception as exc:
                                 log.error(f"(watch_events) (redis_client.publish) ({type(exc)}): {exc}")
                             finally:

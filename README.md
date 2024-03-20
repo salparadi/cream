@@ -28,9 +28,9 @@ To start watching a chain just run `cream chain_name`. At the moment the support
 # Redis
 Once you have a redis server running, this tool will publish messages to these channels
 
- - events_channel
- - pending_transactions_channel
- - finalized_transactions_channel
+ - cream_events
+ - cream_pending_transactions
+ - cream_finalized_transactions
 
 Depending on the chain, either pending or finalized transactions channels are used. Base and Optimism don't have pending transactions so you can only see them after they are confirmed in a block. The rest should work with pending transactions. Arbitrum uses the sequencer. This will certainly be updated during development.
 
