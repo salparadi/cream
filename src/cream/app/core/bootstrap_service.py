@@ -6,7 +6,7 @@ import web3
 from cream_chains import chain_data
 
 from .app_state import AppState
-from ...config.logger import logger
+from ...config.logging import logger
 
 log = logger(__name__)
 

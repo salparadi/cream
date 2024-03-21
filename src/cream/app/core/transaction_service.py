@@ -8,7 +8,8 @@ import ujson
 import websockets
 
 from .app_state import AppState
-from ...config.logger import logger
+from ...config import helpers
+from ...config.logging import logger
 
 log = logger(__name__)
 
@@ -270,16 +271,9 @@ class TransactionService:
             if transaction_gas_price < self.app_state.base_fee_next:
                 continue
 
-            try:
-                result = await redis_client.publish(
-                    "cream_pending_transactions", ujson.dumps(transaction)
-                )
-            except Exception as exc:
-                log.error(
-                    f"(process_pending_transactions) (redis_client.publish) ({type(exc)}): {exc}"
-                )
-
-            await asyncio.sleep(0.01)
+            await helpers.publish_redis_message(
+                redis_client, "cream_pending_transactions", transaction
+            )
 
     async def process_finalized_transactions(self):
         redis_client = self.app_state.redis_client
@@ -287,13 +281,6 @@ class TransactionService:
         while True:
             transaction = await self.finalized_transactions.get()
 
-            try:
-                result = await redis_client.publish(
-                    "cream_finalized_transactions", ujson.dumps(transaction)
-                )
-            except Exception as exc:
-                log.error(
-                    f"(process_finalized_transactions) (redis_client.publish) ({type(exc)}): {exc}"
-                )
-
-            await asyncio.sleep(0.01)
+            await helpers.publish_redis_message(
+                redis_client, "cream_pending_transactions", transaction
+            )

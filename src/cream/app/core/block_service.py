@@ -6,7 +6,7 @@ from typing import Dict
 import websockets
 
 from .app_state import AppState
-from ...config.logger import logger
+from ...config.logging import logger
 
 log = logger(__name__)
 

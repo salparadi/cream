@@ -5,7 +5,8 @@ import ujson
 import websockets
 
 from .app_state import AppState
-from ...config.logger import logger
+from ...config import helpers
+from ...config.logging import logger
 
 log = logger(__name__)
 
@@ -57,17 +58,9 @@ class EventService:
                         if self.app_state.live and self.event_queue:
                             event = self.event_queue.popleft()
 
-                            # Add the event to redis
-                            try:
-                                result = await redis_client.publish(
-                                    "cream_events", ujson.dumps(event)
-                                )
-                            except Exception as exc:
-                                log.error(
-                                    f"(watch_events) (redis_client.publish) ({type(exc)}): {exc}"
-                                )
-                            finally:
-                                await asyncio.sleep(0)
+                            await helpers.publish_redis_message(
+                                redis_client, "cream_events", event
+                            )
 
                         try:
                             message: dict = ujson.loads(await websocket.recv())
