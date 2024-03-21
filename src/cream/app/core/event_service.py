@@ -24,7 +24,7 @@ class EventService:
 
         self.event_queue: deque = deque()
 
-        websocket_uri = self.app_state.chain_info["websocket_uri"]
+        websocket_uri = self.app_state.chain_data["websocket_uri"]
 
         while True:
             try:

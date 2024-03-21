@@ -3,7 +3,7 @@ import redis.asyncio as redis
 import time
 import web3
 
-from cream_chains import chains
+from cream_chains import chain_data
 
 from .app_state import AppState
 from ...config.logger import logger
@@ -14,9 +14,9 @@ log = logger(__name__)
 class BootstrapService:
     def __init__(self, app_state: AppState, chain_name: str):
         self.chain_name = chain_name
-        self.chain_info = chains.get(chain_name)
+        self.chain_data = chain_data.get(chain_name)
 
-        if not self.chain_info:
+        if not self.chain_data:
             log.error(
                 f"Invalid chain name: {chain_name}. Please specify a valid chain from the supported list."
             )
@@ -24,10 +24,10 @@ class BootstrapService:
 
         self.app_state = app_state
         self.app_state.chain_name = chain_name
-        self.app_state.chain_info = self.chain_info
-        self.app_state.node = self.chain_info.get("node")
-        self.app_state.http_uri = self.chain_info.get("http_uri")
-        self.app_state.websocket_uri = self.chain_info.get("websocket_uri")
+        self.app_state.chain_data = self.chain_data
+        self.app_state.node = self.chain_data.get("node")
+        self.app_state.http_uri = self.chain_data.get("http_uri")
+        self.app_state.websocket_uri = self.chain_data.get("websocket_uri")
 
         log.info(
             f"BootstrapService initialized with app instance at {id(self.app_state)}"

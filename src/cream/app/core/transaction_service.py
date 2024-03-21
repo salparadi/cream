@@ -2,14 +2,10 @@ import asyncio
 import base64
 from eth_account._utils.typed_transactions import TypedTransaction
 from eth_account._utils.legacy_transactions import Transaction, vrs_from
-from eth_account._utils.signing import hash_of_signed_transaction
 from eth_account import Account
-from eth_utils.address import to_checksum_address
 from hexbytes import HexBytes
-from typing import List
 import ujson
 import websockets
-import web3
 
 from .app_state import AppState
 from ...config.logger import logger
@@ -26,9 +22,9 @@ class TransactionService:
         self.finalized_transactions = self.app_state.finalized_transactions
         self.pending_transactions = self.app_state.pending_transactions
 
-        self.sequencer_uri = self.app_state.chain_info.get("sequencer_uri")
-        self.websocket_uri = self.app_state.chain_info.get("websocket_uri")
-        self.routers = self.app_state.chain_info.get("routers")
+        self.sequencer_uri = self.app_state.chain_data.get("sequencer_uri")
+        self.websocket_uri = self.app_state.chain_data.get("websocket_uri")
+        self.routers = self.app_state.chain_data.get("routers")
 
         log.info(
             f"TransactionService initialized with app instance at {id(self.app_state)}"
@@ -137,13 +133,11 @@ class TransactionService:
                 # We are dealing with a typed transaction.
                 tx_type = 2
                 tx = TypedTransaction.from_bytes(tx_bytes)
-                # tx_hash = tx.hash()
                 vrs = tx.vrs()
             else:
                 # We are dealing with a legacy transaction.
                 tx_type = 0
                 tx = Transaction.from_bytes(tx_bytes)
-                # tx_hash = hash_of_signed_transaction(tx)
                 vrs = vrs_from(tx)
 
             # extracting sender address

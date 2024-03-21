@@ -2,7 +2,8 @@
 CREAM is a python module to watch new blocks, events, and transactions on EVM chains. Much of this work has been inspired by [BowTiedDevil](https://twitter.com/BowTiedDevil). Some of the LP/Liquidity/Arb path builders are directly based on his work. Go check out his stack [Degen Code](https://www.degencode.com/) for great insight into blockchain work with Python and Vyper. TY Devil!
 
 ## Prerequisites
-Python version 3.10 or newer.
+- Python version 3.10 or newer.
+- [Redis](https://redis.io)
 
 ## Dependencies
 You need [degenbot](https://github.com/BowTiedDevil/degenbot). It should be auto installed when you install this. The rest of the things you need should install when you install this package. If they don't, just install them from pip and I'll get them added to the dependencies.

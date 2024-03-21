@@ -14,8 +14,8 @@ log = logger(__name__)
 class BlockService:
     def __init__(self, app_state: AppState):
         self.app_state = app_state
-        self.http_uri = self.app_state.chain_info["http_uri"]
-        self.websocket_uri = self.app_state.chain_info["websocket_uri"]
+        self.http_uri = self.app_state.chain_data["http_uri"]
+        self.websocket_uri = self.app_state.chain_data["websocket_uri"]
 
         log.info(f"BlockService initialized with app instance at {id(self.app_state)}")
 
@@ -124,7 +124,7 @@ class BlockService:
         transactions and removes them from the pending tx queue, and prints various messages
         """
         self.chain_name = self.app_state.chain_name
-        self.node = self.app_state.chain_info["node"]
+        self.node = self.app_state.chain_data["node"]
 
         # A rolling window of the last 100 block deltas, seeded with an initial value
         block_times = deque(

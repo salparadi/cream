@@ -12,8 +12,8 @@ class AppState:
     average_blocktime: float = 12.0
     base_fee_last: int = 0
     base_fee_next: int = 0
+    chain_data: Optional[Dict] = None
     chain_id: Optional[int] = None
-    chain_info: Optional[Dict] = None
     chain_name: Optional[str] = None
     failed_transactions: Set[str] = field(default_factory=set)
     finalized_transactions: asyncio.Queue = asyncio.Queue()
