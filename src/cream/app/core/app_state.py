@@ -8,7 +8,6 @@ from web3.main import Web3
 
 @dataclass
 class AppState:
-    aggregator_addresses: List[str] = field(default_factory=list)
     average_blocktime: float = 12.0
     base_fee_last: int = 0
     base_fee_next: int = 0
@@ -27,7 +26,6 @@ class AppState:
     node: Optional[str] = None
     pending_transactions: asyncio.Queue = asyncio.Queue()
     redis_client: redis.Redis = field(default=None, init=False)
-    router_addresses: List[str] = field(default_factory=list)
     watching_blocks: bool = False
     watching_events: bool = False
     websocket_uri: Optional[str] = None

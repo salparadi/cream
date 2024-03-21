@@ -61,7 +61,6 @@ class ApiService:
         async def get_app_state():
             if self.app_state:
                 app_state = {
-                    # "aggregator_addresses": self.app_state.aggregator_addresses,
                     "average_blocktime": self.app_state.average_blocktime,
                     "base_fee_last": self.app_state.base_fee_last,
                     "base_fee_next": self.app_state.base_fee_next,
@@ -76,7 +75,6 @@ class ApiService:
                     "live": self.app_state.live,
                     "node": self.app_state.node,
                     "pending_transactions": self.app_state.pending_transactions.qsize(),
-                    # "router_addresses": self.app_state.router_addresses,
                     "watching_blocks": self.app_state.watching_blocks,
                     "watching_events": self.app_state.watching_events,
                 }

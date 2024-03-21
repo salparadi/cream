@@ -14,6 +14,8 @@ log = logger(__name__)
 class EventService:
     def __init__(self, app_state: AppState):
         self.app_state = app_state
+        self.redis_client = self.app_state.redis_client
+
         log.info(f"EventService initialized with app instance at {id(self.app_state)}")
 
     async def watch_events(self):
@@ -21,8 +23,6 @@ class EventService:
         Watches the websocket for new events, parses the events and updates pool liquidity
         information as needed
         """
-        redis_client = self.app_state.redis_client
-
         self.event_queue: deque = deque()
 
         websocket_uri = self.app_state.chain_data["websocket_uri"]
@@ -59,7 +59,7 @@ class EventService:
                             event = self.event_queue.popleft()
 
                             await helpers.publish_redis_message(
-                                redis_client, "cream_events", event
+                                self.redis_client, "cream_events", event
                             )
 
                         try:

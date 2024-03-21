@@ -17,15 +17,13 @@ log = logger(__name__)
 class TransactionService:
     def __init__(self, app_state: AppState):
         self.app_state = app_state
-        self.w3 = self.app_state.w3
-
         self.failed_transactions = self.app_state.failed_transactions
         self.finalized_transactions = self.app_state.finalized_transactions
         self.pending_transactions = self.app_state.pending_transactions
-
         self.sequencer_uri = self.app_state.chain_data.get("sequencer_uri")
+        self.redis_client = self.app_state.redis_client
         self.websocket_uri = self.app_state.chain_data.get("websocket_uri")
-        self.routers = self.app_state.chain_data.get("routers")
+        self.w3 = self.app_state.w3
 
         log.info(
             f"TransactionService initialized with app instance at {id(self.app_state)}"
@@ -255,7 +253,6 @@ class TransactionService:
                 await asyncio.sleep(0.01)  # Yield control back to the event loop
 
     async def process_pending_transactions(self):
-        redis_client = self.app_state.redis_client
 
         while True:
             transaction = await self.pending_transactions.get()
@@ -272,15 +269,14 @@ class TransactionService:
                 continue
 
             await helpers.publish_redis_message(
-                redis_client, "cream_pending_transactions", transaction
+                self.redis_client, "cream_pending_transactions", transaction
             )
 
     async def process_finalized_transactions(self):
-        redis_client = self.app_state.redis_client
 
         while True:
             transaction = await self.finalized_transactions.get()
 
             await helpers.publish_redis_message(
-                redis_client, "cream_pending_transactions", transaction
+                self.redis_client, "cream_finalized_transactions", transaction
             )

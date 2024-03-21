@@ -2,10 +2,10 @@ import asyncio
 from collections import deque
 import ujson
 import time
-from typing import Dict
 import websockets
 
 from .app_state import AppState
+from ...config import helpers
 from ...config.logging import logger
 
 log = logger(__name__)
@@ -14,7 +14,10 @@ log = logger(__name__)
 class BlockService:
     def __init__(self, app_state: AppState):
         self.app_state = app_state
+        self.chain_name = self.app_state.chain_name
         self.http_uri = self.app_state.chain_data["http_uri"]
+        self.node = self.app_state.chain_data["node"]
+        self.redis_client = self.app_state.redis_client
         self.websocket_uri = self.app_state.chain_data["websocket_uri"]
 
         log.info(f"BlockService initialized with app instance at {id(self.app_state)}")
@@ -123,8 +126,6 @@ class BlockService:
         Watches the websocket for new blocks, updates the base fee for the last block, scans
         transactions and removes them from the pending tx queue, and prints various messages
         """
-        self.chain_name = self.app_state.chain_name
-        self.node = self.app_state.chain_data["node"]
 
         # A rolling window of the last 100 block deltas, seeded with an initial value
         block_times = deque(
@@ -228,7 +229,10 @@ class BlockService:
                             f"[+{time.time() - self.app_state.newest_block_timestamp:.2f}s] "
                             f"[{self.app_state.base_fee_last/(10**9):.2f}/{self.app_state.base_fee_next/(10**9):.2f}]"
                         )
-                        await asyncio.sleep(0.1)
+                        await helpers.update_redis_chain_state(
+                            self.redis_client, self.app_state
+                        )
+                        await asyncio.sleep(0.01)
 
             except websockets.ConnectionClosed:
                 log.exception(
