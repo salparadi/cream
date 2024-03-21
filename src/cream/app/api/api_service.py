@@ -10,6 +10,7 @@ from ...config.logger import logger
 
 log = logger(__name__)
 
+
 class ApiService:
     def __init__(self, app_state: AppState):
         self.app_state = app_state
@@ -17,7 +18,7 @@ class ApiService:
         self.setup_routes()
         self.server = None
         log.info(f"ApiService initialized with app instance at {id(self.app_state)}")
-    
+
     def start_api(self):
         """
         Starts up a FastAPI api server to expose app details to a frontend.
@@ -43,24 +44,24 @@ class ApiService:
         asyncio.set_event_loop(loop)
         loop.run_until_complete(self.server.serve())
         loop.close()
-    
+
     def setup_routes(self):
         # Define FastAPI endpoints
         @self.api.get("/")
         async def read_root():
             return {"Hello": "World"}
-        
+
         @self.api.get("/pool-managers/")
         async def get_pool_managers():
             if self.app_state is not None:
                 return {"pool_managers": list(self.app_state.pool_managers.keys())}
             return {"error": "App not initialized"}
-        
+
         @self.api.get("/app/")
         async def get_app_state():
             if self.app_state:
                 app_state = {
-                    #"aggregator_addresses": self.app_state.aggregator_addresses,
+                    # "aggregator_addresses": self.app_state.aggregator_addresses,
                     "average_blocktime": self.app_state.average_blocktime,
                     "base_fee_last": self.app_state.base_fee_last,
                     "base_fee_next": self.app_state.base_fee_next,
@@ -75,18 +76,18 @@ class ApiService:
                     "live": self.app_state.live,
                     "node": self.app_state.node,
                     "pending_transactions": self.app_state.pending_transactions.qsize(),
-                    #"router_addresses": self.app_state.router_addresses,
+                    # "router_addresses": self.app_state.router_addresses,
                     "watching_blocks": self.app_state.watching_blocks,
                     "watching_events": self.app_state.watching_events,
                 }
-                #print(app_state)
+                # print(app_state)
                 return app_state
             return {"error": "App not initialized"}
-        
+
         @self.api.on_event("shutdown")
         async def shutdown_event():
             await self.stop_api()
-    
+
     async def stop_api(self):
         """
         Stops the API server.

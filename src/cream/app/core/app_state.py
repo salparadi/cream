@@ -5,6 +5,7 @@ import redis.asyncio as redis
 from typing import Dict, List, Optional, Set
 from web3.main import Web3
 
+
 @dataclass
 class AppState:
     aggregator_addresses: List[str] = field(default_factory=list)
@@ -31,6 +32,7 @@ class AppState:
     watching_events: bool = False
     websocket_uri: Optional[str] = None
     w3 = Web3
-    
+
+
 # Create a singleton instance of AppStatus
 app_state = AppState()
