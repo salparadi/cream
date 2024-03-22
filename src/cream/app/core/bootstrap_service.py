@@ -47,7 +47,7 @@ class BootstrapService:
                 self.app_state.redis_client = redis.Redis(
                     host=REDIS_HOST, port=REDIS_PORT, db=0
                 )
-                self.app_state.redis_client.ping()
+                await self.app_state.redis_client.ping()
                 print("Redis is up and running.")
             except redis.ConnectionError:
                 print(
