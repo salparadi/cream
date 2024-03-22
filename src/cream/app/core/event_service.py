@@ -61,8 +61,6 @@ class EventService:
                             topic0: str = event["params"]["result"]["topics"][0]
 
                             if topic0 in EVENT_SIGNATURES:
-                                log.info(event["params"]["result"]["address"])
-                                log.info(len(self.event_queue))
                                 await helpers.publish_redis_message(
                                     self.redis_client, "cream_events", event
                                 )
