@@ -6,6 +6,7 @@ import ujson
 import uvicorn
 
 from ..core.app_state import AppState
+from ...config.constants import FASTAPI_HOST, FASTAPI_PORT
 from ...config.logging import logger
 
 log = logger(__name__)
@@ -37,7 +38,7 @@ class ApiService:
         )
 
         if not self.server:
-            config = uvicorn.Config(app=self.api, host="127.0.0.1", port=8000)
+            config = uvicorn.Config(app=self.api, host=FASTAPI_HOST, port=FASTAPI_PORT)
             self.server = uvicorn.Server(config)
         # Note: We don't call asyncio.run here as it's already in a new thread
         loop = asyncio.new_event_loop()

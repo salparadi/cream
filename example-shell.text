@@ -4,6 +4,7 @@
 # Sign up for an API key at the respective blockchain explorer website
 
 export ARBISCAN_API_KEY=###
+export SNOWTRACE_API_KEY=###
 export BASESCAN_API_KEY=###
 export ETHERSCAN_API_KEY=###
 export OPTIMISTIC_ETHERSCAN_API_KEY=###
@@ -50,6 +51,7 @@ export POLYGON_WEBSOCKET_URI=wss://polygon-mainnet.g.alchemy.com/v2/###
 #   APE INFURA KEY   #
 ######################
 # Paste your Infura Key here if you are using Infura for your Ape connections.
+
 export WEB3_INFURA_PROJECT_ID=###
 
 
@@ -57,6 +59,7 @@ export WEB3_INFURA_PROJECT_ID=###
 #  APE ALCHEMY KEYS  #
 ######################
 # Paste your Alchemy Keys here if you are using Alchemy for your Ape connections.
+
 export WEB3_ARBITRUM_MAINNET_ALCHEMY_API_KEY=###
 export WEB3_BASE_MAINNET_ALCHEMY_API_KEY=###
 export WEB3_ETHEREUM_MAINNET_ALCHEMY_API_KEY=###

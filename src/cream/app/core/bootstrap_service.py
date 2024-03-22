@@ -6,6 +6,7 @@ import web3
 from cream_chains import chain_data
 
 from .app_state import AppState
+from ...config.constants import REDIS_HOST, REDIS_PORT
 from ...config.logging import logger
 
 log = logger(__name__)
@@ -41,7 +42,9 @@ class BootstrapService:
 
             self.app_state.w3 = w3
 
-            self.app_state.redis_client = redis.Redis(host="localhost", port=6379, db=0)
+            self.app_state.redis_client = redis.Redis(
+                host=REDIS_HOST, port=REDIS_PORT, db=0
+            )
             await self.app_state.redis_client.flushdb()
 
             self.app_state.http_session = aiohttp.ClientSession()

@@ -8,6 +8,7 @@ description = "A Python EVM-chain block/transaction watcher."
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
+	"aiohttp",
 	"fastapi",
 	"redis",
 	"ujson",

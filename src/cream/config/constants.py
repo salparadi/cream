@@ -8,3 +8,7 @@ EVENT_SIGNATURES = [
     Web3.keccak(text="PairCreated(address,address,address,uint256)").hex(),
     Web3.keccak(text="PoolCreated(address,address,uint24,int24,address)").hex(),
 ]
+FASTAPI_HOST = "127.0.0.1"
+FASTAPI_PORT = 8000
+REDIS_HOST = "127.0.0.1"
+REDIS_PORT = 6379
