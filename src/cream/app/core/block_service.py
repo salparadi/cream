@@ -232,7 +232,6 @@ class BlockService:
                         await helpers.update_redis_chain_state(
                             self.redis_client, self.app_state
                         )
-                        await asyncio.sleep(0.01)
 
             except websockets.ConnectionClosed:
                 log.exception(

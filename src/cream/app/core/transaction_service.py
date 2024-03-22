@@ -122,8 +122,6 @@ class TransactionService:
                         f"(watch_pending_transactions) (websocket.recv): {exc}"
                     )
 
-                await asyncio.sleep(0.01)
-
     async def watch_arbitrum_sequencer_transactions(self, sequencer_uri: str):
 
         def decode_arbitrum_transaction(raw_tx, tx_hash):
@@ -205,8 +203,6 @@ class TransactionService:
                             else:
                                 await self.pending_transactions.put(pending_transaction)
 
-                await asyncio.sleep(0.01)  # Yield control back to the event loop
-
     async def watch_node_pending_transactions(self):
         async for websocket in websockets.client.connect(
             uri=self.websocket_uri, ping_timeout=None, max_queue=None
@@ -249,8 +245,6 @@ class TransactionService:
                     log.exception(
                         f"(watch_pending_transactions) (websocket.recv): {exc}"
                     )
-
-                await asyncio.sleep(0.01)  # Yield control back to the event loop
 
     async def process_pending_transactions(self):
 
