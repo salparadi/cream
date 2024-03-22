@@ -12,7 +12,8 @@ dependencies = [
 	"fastapi",
 	"redis",
 	"ujson",
-	"uvicorn"
+	"uvicorn",
+	"web3"
 ]
 license = {text = "MIT"}
 classifiers = [

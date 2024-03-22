@@ -12,6 +12,7 @@ CREAM is a python module to watch new blocks, events, and transactions on EVM ch
 - redis ([pypi](https://pypi.org/project/degenbot/)): Used to interact with a redis server. It should be auto installed when you install this.
 - ujson ([pypi](https://pypi.org/project/degenbot/)): Used to parse JSON. It should be auto installed when you install this.
 - uvicorn ([pypi](https://pypi.org/project/degenbot/)): Used alongside the FastAPI server. It should be auto installed when you install this.
+- web3 ([pypi](https://pypi.org/project/web3/)): Used for a bunch of stuff! It should be auto installed when you install this.
 
 ## CREAM dependencies
 - CREAMchains [github](https://github.com/salparadi/cream-chains): You'll need this installed to have access to the chain data (things like factories, routers, rpcs, etc). This isn't a package yet, so you need to `git clone` it and install it as an editable installation in a separate folder.
