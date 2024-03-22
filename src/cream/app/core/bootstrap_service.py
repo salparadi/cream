@@ -1,5 +1,6 @@
 import aiohttp
 import redis.asyncio as redis
+import sys
 import time
 import web3
 
@@ -42,10 +43,19 @@ class BootstrapService:
 
             self.app_state.w3 = w3
 
-            self.app_state.redis_client = redis.Redis(
-                host=REDIS_HOST, port=REDIS_PORT, db=0
-            )
-            await self.app_state.redis_client.flushdb()
+            try:
+                self.app_state.redis_client = redis.Redis(
+                    host=REDIS_HOST, port=REDIS_PORT, db=0
+                )
+                self.app_state.redis_client.ping()
+                print("Redis is up and running.")
+            except redis.ConnectionError:
+                print(
+                    "Failed to connect to Redis. Make sure Redis is installed and running."
+                )
+                sys.exit(1)
+            else:
+                await self.app_state.redis_client.flushdb()
 
             self.app_state.http_session = aiohttp.ClientSession()
 
