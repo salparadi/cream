@@ -6,6 +6,7 @@ import websockets
 
 from .app_state import AppState
 from ...config import helpers
+from ...config.constants import *
 from ...config.logging import logger
 
 log = logger(__name__)
@@ -57,10 +58,14 @@ class EventService:
                         # does not yield to the event loop, so coroutines will remain suspended until the queue is empty
                         if self.app_state.live and self.event_queue:
                             event = self.event_queue.popleft()
+                            topic0: str = event["params"]["result"]["topics"][0]
 
-                            await helpers.publish_redis_message(
-                                self.redis_client, "cream_events", event
-                            )
+                            if topic0 in EVENT_SIGNATURES:
+                                log.info(event["params"]["result"]["address"])
+                                log.info(len(self.event_queue))
+                                await helpers.publish_redis_message(
+                                    self.redis_client, "cream_events", event
+                                )
 
                         try:
                             message: dict = ujson.loads(await websocket.recv())
@@ -93,8 +98,6 @@ class EventService:
                             continue
                         else:
                             self.event_queue.append(message)
-
-                        await asyncio.sleep(0.1)
 
             except websockets.ConnectionClosed:
                 log.exception(
