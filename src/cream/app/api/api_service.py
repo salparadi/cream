@@ -52,12 +52,6 @@ class ApiService:
         async def read_root():
             return {"Hello": "World"}
 
-        @self.api.get("/pool-managers/")
-        async def get_pool_managers():
-            if self.app_state is not None:
-                return {"pool_managers": list(self.app_state.pool_managers.keys())}
-            return {"error": "App not initialized"}
-
         @self.api.get("/app/")
         async def get_app_state():
             if self.app_state:
