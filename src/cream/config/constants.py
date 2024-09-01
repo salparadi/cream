@@ -7,6 +7,7 @@ EVENT_SIGNATURES = [
     Web3.keccak(text="Swap(address,address,int256,int256,uint160,uint128,int24)").hex(),
     Web3.keccak(text="PairCreated(address,address,address,uint256)").hex(),
     Web3.keccak(text="PoolCreated(address,address,uint24,int24,address)").hex(),
+    Web3.keccak(text="Transfer(address,address,uint256)").hex(),
 ]
 FASTAPI_HOST = "127.0.0.1"
 FASTAPI_PORT = 8000

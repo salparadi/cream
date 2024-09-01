@@ -120,6 +120,58 @@ class BlockService:
         log.error(
             f"Failed to fetch block transactions for {block_number} after {max_retries} retries."
         )
+    
+    async def get_node_block_receipts(self, block_number):
+    
+        headers = {"Content-Type": "application/json"}
+        params = {
+            "jsonrpc": "2.0",
+            "id": 1,
+            "method": "eth_getBlockByNumber",
+            "params": [
+                block_number,
+                True,
+            ],
+        }
+        
+        retries = 0  # Incrementor for retries
+        max_retries = 5  # X times to retry
+        initial_delay = 0.5  # Wait for X second(s) before the first try
+        delay = 1  # Wait for X second(s) before the first retry
+        
+        await asyncio.sleep(initial_delay)  # Initial delay before starting the retries
+        
+        while retries < max_retries:
+            async with self.app_state.http_session.post(
+                self.http_uri, headers=headers, json=params
+            ) as response:
+                response_data = await response.json()
+                # print(response_data)
+                if "error" not in response_data:
+                    receipts = response_data.get("result", {}).get("transactions", [])
+                    if receipts:
+                        # Filter out receipts of type 0x7e and process the rest
+                        filtered_receipts = [
+                            r for r in receipts if r.get("type") != "0x7e"
+                        ]
+                        for receipt in filtered_receipts:
+                            await self.app_state.finalized_transactions.put(receipt)
+                        return
+                    else:
+                        log.error(f"No receipts found in the block {block_number}.")
+                        return None  # Return to indicate the attempt was made but no data was found
+        
+                log.error(
+                    f"Error fetching block transactions: {response_data.get('error')}"
+                )
+        
+            retries += 1
+            await asyncio.sleep(delay)
+            delay *= 2  # Exponential backoff for the delay
+        
+        log.error(
+            f"Failed to fetch block transactions for {block_number} after {max_retries} retries."
+        )
 
     async def watch_new_blocks(self):
         """
@@ -169,6 +221,11 @@ class BlockService:
                                 "optimism",
                             ] and self.node in ["alchemy"]:
                                 await self.get_alchemy_block_receipts(block_number)
+                            
+                            if self.chain_name in [
+                                "base",
+                            ] and self.node in ["node"]:
+                                await self.get_node_block_receipts(block_number)
 
                             if self.chain_name in ["avalanche"] and self.node in [
                                 "infura"

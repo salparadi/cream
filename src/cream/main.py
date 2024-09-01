@@ -38,9 +38,7 @@ async def main(chain_name):
     ]
 
     # Conditionally choose which transaction tasks to run based on the chain/node combo
-    if (
-        app_state.node == "alchemy" and app_state.chain_name in ["base", "optimism"]
-    ) or (app_state.node == "infura" and app_state.chain_name in ["avalanche"]):
+    if (app_state.node == "alchemy" and app_state.chain_name in ["base", "optimism"]) or (app_state.node == "node" and app_state.chain_name in ["base"]) or (app_state.node == "infura" and app_state.chain_name in ["avalanche"]):
         tasks.append(transaction_service.process_finalized_transactions())
     else:
         tasks.append(transaction_service.watch_transactions())
