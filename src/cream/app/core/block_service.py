@@ -284,7 +284,7 @@ class BlockService:
                         log.info(
                             f"[BLOCK #{self.app_state.newest_block}] "
                             f"[+{time.time() - self.app_state.newest_block_timestamp:.2f}s] "
-                            f"[{self.app_state.base_fee_last/(10**9):.2f}/{self.app_state.base_fee_next/(10**9):.2f}]"
+                            f"[{self.app_state.base_fee_last/(10**9):.4f}/{self.app_state.base_fee_next/(10**9):.4f}]"
                         )
                         await helpers.update_redis_chain_state(
                             self.redis_client, self.app_state
