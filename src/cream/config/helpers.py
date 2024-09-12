@@ -46,7 +46,7 @@ async def update_redis_chain_state(redis_client, app_state):
 
     # Extract only the relevant parts from the app_state
     blockchain_state = {key: getattr(app_state, key, None) for key in relevant_keys}
-
-    # Serialize and update the Redis store
+    
+    # Serialize and publish the state
     serialized_state = ujson.dumps(blockchain_state)
-    await redis_client.set("app_state", serialized_state)
+    await redis_client.publish("cream_app_state", serialized_state)
