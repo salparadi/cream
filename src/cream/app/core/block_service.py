@@ -224,6 +224,7 @@ class BlockService:
                             
                             if self.chain_name in [
                                 "base",
+                                "optimism",
                             ] and self.node in ["node"]:
                                 await self.get_node_block_receipts(block_number)
 
