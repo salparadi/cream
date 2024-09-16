@@ -44,12 +44,6 @@ class TransactionService:
                 if self.app_state.chain_name == "arbitrum":
                     await self.watch_arbitrum_sequencer_transactions(self.sequencer_uri)
 
-                elif (
-                    self.app_state.chain_name == "base"
-                    and self.app_state.node == "node"
-                ):
-                    await self.watch_node_pending_transactions()
-
                 elif self.app_state.chain_name == "ethereum":
                     if self.app_state.node == "node":
                         await self.watch_node_pending_transactions()
